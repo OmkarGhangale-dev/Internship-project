@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Athlex — AI Workout Generator</title>
+<meta name="description" content="Athlex generates a personalized gym workout in seconds with your AI training partner.">
+
+<!-- Fonts: Bebas Neue (display/headlines), Inter (body text), JetBrains Mono (stats readout) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ HEADER / NAV ============ -->
+<header class="site-header">
+  <div class="container header-row">
+    <a href="#top" class="logo">ATHLEX<span class="logo-dot">.</span></a>
+
+    <nav class="main-nav" id="mainNav">
+      <a href="#top">Home</a>
+      <a href="#generator">Generate</a>
+      <a href="#assistant">Ask Coach</a>
+    </nav>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ HERO SECTION ============ -->
+  <section class="hero" id="top">
+    <div class="container hero-grid">
+
+      <div class="hero-copy">
+        <p class="eyebrow">AI Training Partner</p>
+        <h1 class="hero-title">Your workout,<br>built by AI in <span class="highlight">30 seconds.</span></h1>
+        <p class="hero-sub">
+          Tell Athlex what you're training, what you've got to train with, and how much time
+          you have. It writes the session — warm-up, working sets, rest, and coaching cues —
+          tuned to you.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" id="heroGenerateBtn">Generate My Workout</button>
+          <a href="#assistant" class="btn btn-ghost">Ask the Coach</a>
+        </div>
+      </div>
+
+      <!-- Signature visual: a stack of "plates" that also doubles as the loading motif -->
+      <div class="hero-visual" aria-hidden="true">
+        <div class="plate-stack">
+          <div class="plate plate-1"></div>
+          <div class="plate plate-2"></div>
+          <div class="plate plate-3"></div>
+          <div class="plate plate-4"></div>
+          <div class="bar"></div>
+        </div>
+        <div class="readout-card">
+          <span class="readout-label">Live Session</span>
+          <span class="readout-value">4 <small>SETS</small></span>
+          <span class="readout-value">10 <small>REPS</small></span>
+          <span class="readout-value">90<small>s REST</small></span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ WORKOUT FORM SECTION ============ -->
+  <section class="generator" id="generator">
+    <div class="container">
+      <p class="eyebrow center">Step 1</p>
+      <h2 class="section-title center">Build your session</h2>
+      <p class="section-sub center">Pick one option per row. FORGE handles the rest.</p>
+
+      <form id="workoutForm" class="workout-form" novalidate>
+
+        <!-- Muscle Group(s) — multi-select, up to 3 -->
+        <fieldset class="form-group">
+          <legend>Muscle Group(s) <span class="optional-tag">select up to 3</span></legend>
+          <div class="pill-group" data-group="muscleGroup" data-multi="true">
+            <button type="button" class="pill" data-value="Chest">Chest</button>
+            <button type="button" class="pill" data-value="Back">Back</button>
+            <button type="button" class="pill" data-value="Legs">Legs</button>
+            <button type="button" class="pill" data-value="Shoulders">Shoulders</button>
+            <button type="button" class="pill" data-value="Biceps">Biceps</button>
+            <button type="button" class="pill" data-value="Triceps">Triceps</button>
+            <button type="button" class="pill" data-value="Full Body">Full Body</button>
+          </div>
+        </fieldset>
+
+        <!-- Goal -->
+        <fieldset class="form-group">
+          <legend>Goal</legend>
+          <div class="pill-group" data-group="goal">
+            <button type="button" class="pill" data-value="Muscle Gain">Muscle Gain</button>
+            <button type="button" class="pill" data-value="Fat Loss">Fat Loss</button>
+            <button type="button" class="pill" data-value="Strength">Strength</button>
+            <button type="button" class="pill" data-value="Endurance">Endurance</button>
+          </div>
+        </fieldset>
+
+        <!-- Experience Level -->
+        <fieldset class="form-group">
+          <legend>Experience Level</legend>
+          <div class="pill-group" data-group="experience">
+            <button type="button" class="pill" data-value="Beginner">Beginner</button>
+            <button type="button" class="pill" data-value="Intermediate">Intermediate</button>
+            <button type="button" class="pill" data-value="Advanced">Advanced</button>
+          </div>
+        </fieldset>
+
+        <!-- Equipment -->
+        <fieldset class="form-group">
+          <legend>Equipment</legend>
+          <div class="pill-group" data-group="equipment">
+            <button type="button" class="pill" data-value="Gym">Full Gym</button>
+            <button type="button" class="pill" data-value="Home">Home</button>
+            <button type="button" class="pill" data-value="Dumbbells">Dumbbells Only</button>
+            <button type="button" class="pill" data-value="Bodyweight">Bodyweight Only</button>
+          </div>
+        </fieldset>
+
+        <!-- Duration -->
+        <fieldset class="form-group">
+          <legend>Workout Duration</legend>
+          <div class="pill-group" data-group="duration">
+            <button type="button" class="pill" data-value="30">30 min</button>
+            <button type="button" class="pill" data-value="45">45 min</button>
+            <button type="button" class="pill" data-value="60">60 min</button>
+            <button type="button" class="pill" data-value="90">90 min</button>
+          </div>
+        </fieldset>
+
+        <!-- Injuries / Limitations -->
+        <fieldset class="form-group">
+          <legend for="injuries">Injuries or Limitations <span class="optional-tag">optional</span></legend>
+          <textarea id="injuries" name="injuries" rows="2"
+            placeholder="e.g. sore left knee, avoid overhead pressing..."></textarea>
+        </fieldset>
+
+        <p class="form-error" id="formError" role="alert" aria-live="polite"></p>
+
+        <button type="submit" class="btn btn-primary btn-generate" id="generateBtn">
+          <span class="btn-label">Generate Workout</span>
+          <span class="btn-spinner" hidden>
+            <span class="mini-plate"></span><span class="mini-plate"></span><span class="mini-plate"></span>
+          </span>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ RESULTS SECTION ============ -->
+  <section class="results" id="results" hidden>
+    <div class="container">
+
+      <div class="results-header">
+        <p class="eyebrow">Your Session</p>
+        <h2 class="section-title" id="workoutTitle">Workout</h2>
+        <button class="btn btn-ghost btn-small" id="regenerateBtn">Regenerate Whole Workout</button>
+      </div>
+
+      <div class="phase-block">
+        <h3 class="phase-title"><span class="phase-dot warm"></span>Warm-up</h3>
+        <ul class="phase-list" id="warmupList"></ul>
+      </div>
+
+      <h3 class="phase-title exercises-heading"><span class="phase-dot work"></span>Working Sets</h3>
+      <div class="exercise-grid" id="exerciseGrid"></div>
+
+      <div class="phase-block">
+        <h3 class="phase-title"><span class="phase-dot cool"></span>Cool-down</h3>
+        <ul class="phase-list" id="cooldownList"></ul>
+      </div>
+
+      <div class="phase-block tips-block">
+        <h3 class="phase-title"><span class="phase-dot tip"></span>Coach Tips</h3>
+        <ul class="phase-list" id="tipsList"></ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ AI ASSISTANT / CHAT SECTION ============ -->
+  <section class="assistant" id="assistant">
+    <div class="container assistant-grid">
+
+      <div class="assistant-intro">
+        <p class="eyebrow">Ask Anything</p>
+        <h2 class="section-title">Talk to your coach</h2>
+        <p class="section-sub">
+          Swap an exercise, sanity-check your volume, or ask a quick nutrition question.
+          Try: <em>"Can I replace squats?"</em> or <em>"How much protein should I eat?"</em>
+        </p>
+      </div>
+
+      <div class="chat-window">
+        <div class="chat-log" id="chatLog" aria-live="polite">
+          <div class="chat-bubble bot">
+            Hey — I'm your AI coach. Ask me about exercise swaps, sets and reps, or general
+            training questions.
+          </div>
+        </div>
+
+        <form class="chat-input-row" id="chatForm">
+          <input type="text" id="chatInput" placeholder="Ask a fitness question..." autocomplete="off">
+          <button type="submit" class="btn btn-primary btn-small">Send</button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>Athlex — built with HTML, CSS &amp; vanilla JavaScript. Not a substitute for professional medical or training advice.</p>
+  </div>
+</footer>
+
+<!-- Reusable card template for JS to clone -->
+<template id="exerciseCardTemplate">
+  <article class="exercise-card">
+    <header class="exercise-card-head">
+      <h4 class="exercise-name"></h4>
+    </header>
+    <div class="exercise-stats">
+      <div class="stat">
+        <span class="stat-value stat-sets"></span>
+        <span class="stat-label">Sets</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value stat-reps"></span>
+        <span class="stat-label">Reps</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value stat-rest"></span>
+        <span class="stat-label">Rest</span>
+      </div>
+    </div>
+    <p class="exercise-tip"></p>
+    <button type="button" class="btn btn-outline btn-replace">Replace Exercise</button>
+  </article>
+</template>
+
+<script src="script.js"></script>
+</body>
+</html>
